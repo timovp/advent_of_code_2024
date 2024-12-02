@@ -70,5 +70,6 @@ def main():
     assert len(test_damp) == 2
 
 
-for _ in range(100):
-    main()
+main()
+# to profile, run with:
+# python -m kernprof -lvrz -o ".prof/profile.lprof" -p part_2.py part_2.py
