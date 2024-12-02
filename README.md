@@ -54,7 +54,7 @@ Also, as I was converting strings to int, the `\n` would actually disappear anyw
 #### line_profiler autoprofiler
 
 This was nice, I read through the documentaion of `line_profiler` \/ `kernprof`.
-It has a feature called [https://kernprof.readthedocs.io/en/latest/line_profiler.autoprofile.html#module-line_profiler.autoprofile](autoprofiler)
+It has a feature called [autoprofiler](https://kernprof.readthedocs.io/en/latest/line_profiler.autoprofile.html#module-line_profiler.autoprofile)
 where you don't need to manually start all the profiling yourself.
 You just specify what package/file you want to profile,
 with the `-p to_be_profiled.py` argument, and it prints some nice output.
@@ -66,6 +66,6 @@ python -m kernprof -lvrz -o ".prof/profile.lprof" -p part_x.py part_x.py
 
 #### Overall
 
-Because I didnt use `re` anymore and I don't need to import line_profiler now,
+Because I didnt use `re` anymore and I don't need to import `line_profiler` now,
 my file didn't contain any imports, which was super cool.
 Might continue with that as a goal!
