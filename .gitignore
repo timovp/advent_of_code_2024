@@ -5,3 +5,4 @@ __pycache__
 *profile*
 day_1/input_part1.txt
 */input_*
+*.lprof

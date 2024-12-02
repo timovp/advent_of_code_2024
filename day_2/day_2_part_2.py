@@ -1,7 +1,3 @@
-import line_profiler
-
-
-@line_profiler.profile
 def read_lines(path: str = "./input_day_2.txt"):
     with open(path) as f:
         lines = []
@@ -11,7 +7,6 @@ def read_lines(path: str = "./input_day_2.txt"):
     return [line.split(" ") for line in lines]
 
 
-@line_profiler.profile
 def make_diff_line(line: list[str]) -> list[int]:
     diff_line = []
     line_int = [int(el) for el in line]
@@ -27,7 +22,6 @@ def make_diff_lines(lines: list[list[str]]) -> list[list[int]]:
     return [make_diff_line(line) for line in lines]
 
 
-@line_profiler.profile
 def check_logic(diff_line: list[int]):
     if any(el > 3 or el < -3 for el in diff_line):
         return False
@@ -36,7 +30,6 @@ def check_logic(diff_line: list[int]):
     return False
 
 
-@line_profiler.profile
 def check_popped(orig_line: list[str]):
     for idx, element in enumerate(orig_line):
         orig_line.pop(idx)
@@ -62,7 +55,6 @@ def find_safe_reports(
     return real_safe, safe_with_dampener
 
 
-@line_profiler.profile
 def main():
     lines = read_lines()
     diff_lines = [make_diff_line(line) for line in lines]
@@ -71,7 +63,7 @@ def main():
     assert len(real_safe) == 314
     # assert len(with_dampener) == 59
     assert len(real_safe) + len(with_dampener) == 373
-    test_lines = read_lines("test_input_day_2_part_2.txt")
+    test_lines = read_lines("./exmaple_day_2_part_2.txt")
     test_diff_files = [make_diff_line(line) for line in test_lines]
     test_safe, test_damp = find_safe_reports(test_diff_files, test_lines)
     assert len(test_safe) == 2
