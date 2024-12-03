@@ -64,8 +64,28 @@ The command is:
 python -m kernprof -lvrz -o ".prof/profile.lprof" -p part_x.py part_x.py
 ```
 
-#### Overall
+#### Overall Day 2
 
 Because I didnt use `re` anymore and I don't need to import `line_profiler` now,
 my file didn't contain any imports, which was super cool.
 Might continue with that as a goal!
+
+### Day 3
+
+#### Regex yay
+
+So, my `re.findall` did great and it was an easy submission.
+
+#### Regex hell
+
+But then I landed in regex hell. I thought. I did some smart things.
+But it took a while untill I noticed that it would work better if first
+all lines were joined into a single line. I tried doing that by doing `"".join(lines)`.
+That didn't work as I had planned, because this did not eliminate all `\n`,
+before I added my own. Unlucky, so I went for the trusty new line removal tool: `<backspace>`.
+That worked, and my answer got accepted.
+
+#### Overall Day 3
+
+I was not first to solve them all, and a pescy new line hidden somewhere
+was the culprit. Thinking of printing more when debugging next time earlier.
