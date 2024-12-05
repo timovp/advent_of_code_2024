@@ -168,3 +168,31 @@ I used [termplotlib](https://github.com/nschloe/termplotlib),
 which made plotting to the terminal easy, as it mimics matloblib a little.
 In the end plotting ranges of 10^8 - 10^10 integers, was not considered fun,
 and took longer than doing the calculations. But hey, it looks nice :-)
+
+### Day 5
+
+#### Lists and Mutable objects
+
+Today was about ordering lists in such a way that they satisfie the given ordering-conditions.
+Part 1 was about determining the correctly ordered lists.
+In part 2 there the exercise was to correct those lists that were not
+following the conditions.
+
+For me there were to things nice to use / learn. Doing very basic list operations:
+
+- `list.pop()`
+- `list.insert()`
+- `list.index()`
+
+Which was very useful in this exercise.
+
+I also used another basic Python type, which I rarely use effectively: `set`!
+To determine if an ordering is applicable to an instruction (update / row) I use:
+
+```python
+ordering = {4,2}
+instruction = {1,2,3,4}
+ordering.issubset(instruction)
+```
+
+But I got bitten by the mutability of lists, so I want to learn more about that soon.
