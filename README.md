@@ -94,14 +94,14 @@ was the culprit. Thinking of printing more when debugging next time earlier.
 
 #### Matrix things
 
-Learning from yesterday, I was eager to do more printing and visualize 
-more of my results. Well, I did, and it worked. But it made me slow. 
+Learning from yesterday, I was eager to do more printing and visualize
+more of my results. Well, I did, and it worked. But it made me slow.
 Pretty, but slow.
 
 #### Visualizations
 
 I started out example input and wanted to make the same output as they did replacing
-the irrelevant characters with `.`. This resulted in a bit of spaghetti, 
+the irrelevant characters with `.`. This resulted in a bit of spaghetti,
 but I think acceptable for the prettyness.
 
 ```text
