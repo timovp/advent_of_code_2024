@@ -89,3 +89,73 @@ That worked, and my answer got accepted.
 
 I was not first to solve them all, and a pescy new line hidden somewhere
 was the culprit. Thinking of printing more when debugging next time earlier.
+
+### Day 4
+
+#### Matrix things
+
+Learning from yesterday, I was eager to do more printing and visualize 
+more of my results. Well, I did, and it worked. But it made me slow. 
+Pretty, but slow.
+
+#### Visualizations
+
+I started out example input and wanted to make the same output as they did replacing
+the irrelevant characters with `.`. This resulted in a bit of spaghetti, 
+but I think acceptable for the prettyness.
+
+```text
+MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX
+
+....XXMAS. | ....XXMAS. ✅
+.SAMXMS... | .SAMXMS... ✅
+...S..A... | ...S..A... ✅
+..A.A.MS.X | ..A.A.MS.X ✅
+XMASAMX.MM | XMASAMX.MM ✅
+X.....XA.A | X.....XA.A ✅
+S.S.S.S.SS | S.S.S.S.SS ✅
+.A.A.A.A.A | .A.A.A.A.A ✅
+..M.M.M.MM | ..M.M.M.MM ✅
+.X.X.XMASX | .X.X.XMASX ✅
+```
+
+I did the same for the big one, but there was less to compare obviously.
+I used this idea of visualizations also to solve last years day_5 problem.
+
+#### 2023 Day 5
+
+Day 5 was the puzzle that was the hell that made me and most colleagues quit.  
+It was a puzzle about hashmaps (dictionaries) chained, mapping ranges of numbers
+to other ranges of numbers. You had to find the input that with the smallest result.
+Conceptionally not so difficult, but, then done with multiple giant ranges per map,
+made it almost impossible to bruteforce yourself through the map constructions.
+
+In the end I went for a calculation instead of a dictionary loopup.
+Saved a lot of time. But still, no luck when applying for such big ranges.
+
+So I thought, based on todays experiences I should just plot the input-output cominations.
+Maybe it would give me some insight into a better solution.
+
+I sampled every thousand-th element of a range, and plotted the overall
+input and output ranges. Interesting results, but learned that this
+still would be a huge undertaking.
+
+From the graphic it became clear to me that I could visually search for areas
+around a local minimum. Doing this iteratively while making the sampled
+ranges bigger (every 1000th, 100th, 10th, 5th etc), led me to smaller
+attainable ranges to search for a minimum. After some iterations I
+finally found a minimum and.... It was correct!
+
+I used [termplotlib](https://github.com/nschloe/termplotlib),
+which made plotting to the terminal easy, as it mimics matloblib a little.
+In the end plotting ranges of 10^8 - 10^10 integers, was not considered fun,
+and took longer than doing the calculations. But hey, it looks nice :-)
