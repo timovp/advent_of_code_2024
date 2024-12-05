@@ -133,27 +133,36 @@ I used this idea of visualizations also to solve last years day_5 problem.
 
 #### 2023 Day 5
 
+##### They made me quit
+
 Day 5 was the puzzle that was the hell that made me and most colleagues quit.  
 It was a puzzle about hashmaps (dictionaries) chained, mapping ranges of numbers
 to other ranges of numbers. You had to find the input that with the smallest result.
 Conceptionally not so difficult, but, then done with multiple giant ranges per map,
 made it almost impossible to bruteforce yourself through the map constructions.
 
+##### The old appreach
+
 In the end I went for a calculation instead of a dictionary loopup.
 Saved a lot of time. But still, no luck when applying for such big ranges.
 
-So I thought, based on todays experiences I should just plot the input-output cominations.
-Maybe it would give me some insight into a better solution.
+##### Making it visual again
 
+Based on todays experiences I should just plot the input-output cominations.
+Maybe it would give me some insight into a better solution.
 I sampled every thousand-th element of a range, and plotted the overall
 input and output ranges. Interesting results, but learned that this
 still would be a huge undertaking.
+
+##### Finding some local mininums
 
 From the graphic it became clear to me that I could visually search for areas
 around a local minimum. Doing this iteratively while making the sampled
 ranges bigger (every 1000th, 100th, 10th, 5th etc), led me to smaller
 attainable ranges to search for a minimum. After some iterations I
 finally found a minimum and.... It was correct!
+
+##### Plotting in the terminal
 
 I used [termplotlib](https://github.com/nschloe/termplotlib),
 which made plotting to the terminal easy, as it mimics matloblib a little.
