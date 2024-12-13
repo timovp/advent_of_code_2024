@@ -399,12 +399,13 @@ string_to_print:str = Color.LIGHT_GREEN + "some_string" + Color.RESET
 
 #### I dont want to talk about it
 
-Well again I made my own visual debuger which was fun on its own so my solution looked like this: 
+Well again I made my own visual debuger which was fun on its own so my solution looked like this, but then colors ring the 
+free space and the piece that will move (so on the second line the `99` and the first `..`). Again, will look into embeddinges later.
 
 ```text
 00...111...2...333.44.5555.6666.777.888899
-00<span style="color:green">..</span>.111...2...333.44.5555.6666.777.8888<span style="color:blue">99</span>
-0099.111<span style="color:green">...</span>2...333.44.5555.6666.<span style="color:blue">777</span>.8888..
-0099.1117772<span style="color:green">..</span>.333.<span style="color:green">44</span>.5555.6666.....8888..
-0099<span style="color:green">.</span>111777<span style="color:green">2</span>44.333....5555.6666.....8888..
+00...111...2...333.44.5555.6666.777.88889️9
+0099.111...2...333.44.5555.6666.777.8888..
+0099.1117772...333.44.5555.6666.....8888..
+0099.111777244.333....5555.6666.....8888..
 ```
