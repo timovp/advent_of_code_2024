@@ -78,13 +78,13 @@ def main():
     rear_pointer_next = 0
     while True:
         # look for first point that is free space
-        # `while disk[front_pointer] != ".":`
-        # `    front_pointer += 1`
+        while disk[front_pointer] != ".":
+            front_pointer += 1
         # after profiling I realized that I spent most time here
         # and decided I could try `list.index()`. It made it way faster
         # I think it's because you start over from 0.
         # and appearantly it's faster than +=1 operations
-        front_pointer = disk.index(".")
+        # front_pointer = disk.index(".")
         front_pointer_next = front_pointer
 
         # then look for how big the free space is
