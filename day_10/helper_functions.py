@@ -26,7 +26,7 @@ class Color:
     WHITE = "\033[1;37m"
 
 
-def read_lines(path: str = "./input_day_x.txt"):
+def read_lines(path: str = "./input_day_x.txt") -> list[list[str]]:
     with open(path) as f:
         lines = []
         lines = f.readlines()
