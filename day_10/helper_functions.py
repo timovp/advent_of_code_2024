@@ -123,7 +123,8 @@ def print_empty_lines(n=10):
 
 
 def get_cursor_position():
-    """
+    """Returns (row, col) as integers, representing the cursor's position.
+
     Returns (row, col) as integers, representing the cursor's position in the terminal.
     """
     # Save original terminal settings
@@ -156,7 +157,8 @@ def get_cursor_position():
             col = int(match.group(2))
             return row, col
         else:
-            raise ValueError("should not happen?")
+            errmsg = "should not happen?"
+            raise ValueError(errmsg)
 
     finally:
         # Restore original terminal settings

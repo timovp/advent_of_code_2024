@@ -3,7 +3,6 @@ from time import sleep
 from helper_functions import (
     Color,
     Cursor,
-    clc,
     get_cursor_position,
     print_empty_lines,
     read_lines,
@@ -24,14 +23,6 @@ class Map:
         for y, row in enumerate(lines):
             for x, c in enumerate(row):
                 self.grid[y][x] = TrailLocation(x, y, int(c))
-
-    def print_grid(self, trail: "Trail"):
-        clc()
-        for line in self.colored:
-            print("".join(str(c) for c in line))
-        print("-" * self.ncols)
-        print(f"{trail.rating}")
-        print("-" * self.ncols)
 
     def make_loc_blue(self, loc: "TrailLocation") -> None:
         self.colored[loc.y][loc.x] = Color.LIGHT_BLUE + str(loc.height) + Color.RESET
@@ -65,9 +56,6 @@ class TrailLocation:
         self.y = y
         self.height = height
 
-    def is_head(self) -> bool:
-        return self.height == 0
-
     def is_right_traillocation(self, trailmap: Map) -> bool:
         try:
             return self.height + 1 == trailmap.grid[self.y][self.x + 1].height
@@ -79,7 +67,6 @@ class TrailLocation:
             return False
         try:
             return self.height + 1 == trailmap.grid[self.y][self.x - 1].height
-
         except IndexError:
             return False
 
@@ -88,7 +75,6 @@ class TrailLocation:
             return False
         try:
             return self.height + 1 == trailmap.grid[self.y - 1][self.x].height
-
         except IndexError:
             return False
 
@@ -137,38 +123,26 @@ class Trail:
         if loc.height == self.MAX_HEIGHT:
             self.rating += 1
         trailmap.colorize_traillocation(loc)
+        # do stuff for fancy terminal visualization.
+        Cursor.position(loc.y + tzero_y, loc.x + tzero_x, False)
         print(trailmap.colored[loc.y][loc.x], end="", flush=False)
         Cursor.left(flush=True)
         sleep(0.05)
 
     def look_for_new_locs(self, loc: TrailLocation, trailmap: Map) -> Map:
         if loc.is_left_traillocation(trailmap):
-            left_loc = loc.get_left(trailmap)
-            Cursor.position(left_loc.y + tzero_y, left_loc.x + tzero_x, True)
-            self.add(left_loc, trailmap)
+            self.add(loc.get_left(trailmap), trailmap)
         if loc.is_right_traillocation(trailmap):
-            right_loc = loc.get_right(trailmap)
-            Cursor.position(right_loc.y + tzero_y, right_loc.x + tzero_x, True)
-            self.add(right_loc, trailmap)
+            self.add(loc.get_right(trailmap), trailmap)
         if loc.is_down_traillocation(trailmap):
-            down_loc = loc.get_down(trailmap)
-            Cursor.position(down_loc.y + tzero_y, down_loc.x + tzero_x, True)
-            self.add(down_loc, trailmap)
+            self.add(loc.get_down(trailmap), trailmap)
         if loc.is_up_traillocation(trailmap):
-            up_loc = loc.get_up(trailmap)
-            Cursor.position(up_loc.y + tzero_y, up_loc.x + tzero_x, True)
-            self.add(up_loc, trailmap)
+            self.add(loc.get_up(trailmap), trailmap)
         return trailmap
-
-    def deduplicate(self) -> set[TrailLocation]:
-        set_of_locs = set()
-        for loc in self.locations:
-            set_of_locs.add((loc.x, loc.y, loc.height))
-        return set(self.locations)
 
     def get_number_nines(self) -> int:
         number = 0
-        for loc in self.deduplicate():
+        for loc in set(self.locations):
             if loc.height == self.MAX_HEIGHT:
                 number += 1
         return number
@@ -191,8 +165,8 @@ total_rating = 0
 lines = read_lines("./input_day_x_example.txt")
 trailmap = Map(lines)
 trail = Trail()
-print_empty_lines(12)
-Cursor.up(12, flush=True)
+print_empty_lines(trailmap.nrows + 3)
+Cursor.up(trailmap.nrows + 3, flush=True)
 tzero_y, tzero_x = get_cursor_position()
 for zero in trailmap.zeros():
     for line in trailmap.lines:
@@ -208,5 +182,10 @@ for zero in trailmap.zeros():
     total_rating += rating
     Cursor.position(tzero_y, tzero_x, False)
 
-Cursor.position(tzero_y + 12, 1, True)
+Cursor.position(tzero_y + trailmap.nrows, 1, True)
 sleep(1)
+print(f"{trail_count=}")
+print(f"{total_rating=}")
+print(f"{total_rating/3=}")
+Cursor.prev_line()
+Cursor.next_line()
