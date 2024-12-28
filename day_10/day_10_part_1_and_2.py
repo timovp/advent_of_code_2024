@@ -1,7 +1,18 @@
-from helper_functions import read_lines, clc, Color
+from time import sleep
+
+from helper_functions import (
+    Color,
+    Cursor,
+    clc,
+    get_cursor_position,
+    print_empty_lines,
+    read_lines,
+)
 
 
 class Map:
+    MAX_HEIGHT = 9
+
     def __init__(self, lines: list[list[str]]):
         self.lines = lines
         self.grid: list[list[TrailLocation]] = [
@@ -32,7 +43,7 @@ class Map:
         self.colored[loc.y][loc.x] = Color.LIGHT_GREEN + str(loc.height) + Color.RESET
 
     def colorize_traillocation(self, loc: "TrailLocation") -> None:
-        if loc.height == 9:
+        if loc.height == self.MAX_HEIGHT:
             self.make_loc_red(loc)
         elif loc.height == 0:
             self.make_loc_green(loc)
@@ -57,47 +68,47 @@ class TrailLocation:
     def is_head(self) -> bool:
         return self.height == 0
 
-    def is_right_traillocation(self, map: Map) -> bool:
+    def is_right_traillocation(self, trailmap: Map) -> bool:
         try:
-            return self.height + 1 == map.grid[self.y][self.x + 1].height
+            return self.height + 1 == trailmap.grid[self.y][self.x + 1].height
         except IndexError:
             return False
 
-    def is_left_traillocation(self, map: Map) -> bool:
+    def is_left_traillocation(self, trailmap: Map) -> bool:
         if self.x - 1 < 0:
             return False
         try:
-            return self.height + 1 == map.grid[self.y][self.x - 1].height
+            return self.height + 1 == trailmap.grid[self.y][self.x - 1].height
 
         except IndexError:
             return False
 
-    def is_up_traillocation(self, map: Map) -> bool:
+    def is_up_traillocation(self, trailmap: Map) -> bool:
         if self.y - 1 < 0:
             return False
         try:
-            return self.height + 1 == map.grid[self.y - 1][self.x].height
+            return self.height + 1 == trailmap.grid[self.y - 1][self.x].height
 
         except IndexError:
             return False
 
-    def is_down_traillocation(self, map: Map) -> bool:
+    def is_down_traillocation(self, trailmap: Map) -> bool:
         try:
-            return self.height + 1 == map.grid[self.y + 1][self.x].height
+            return self.height + 1 == trailmap.grid[self.y + 1][self.x].height
         except IndexError:
             return False
 
-    def get_left(self, map: Map) -> "TrailLocation":
-        return map.grid[self.y][self.x - 1]
+    def get_left(self, trailmap: Map) -> "TrailLocation":
+        return trailmap.grid[self.y][self.x - 1]
 
-    def get_right(self, map: Map) -> "TrailLocation":
-        return map.grid[self.y][self.x + 1]
+    def get_right(self, trailmap: Map) -> "TrailLocation":
+        return trailmap.grid[self.y][self.x + 1]
 
-    def get_down(self, map: Map) -> "TrailLocation":
-        return map.grid[self.y + 1][self.x]
+    def get_down(self, trailmap: Map) -> "TrailLocation":
+        return trailmap.grid[self.y + 1][self.x]
 
-    def get_up(self, map: Map) -> "TrailLocation":
-        return map.grid[self.y - 1][self.x]
+    def get_up(self, trailmap: Map) -> "TrailLocation":
+        return trailmap.grid[self.y - 1][self.x]
 
     def __repr__(self) -> str:
         return f"({self.x},{self.y}) = {self.height}"
@@ -115,27 +126,39 @@ class TrailLocation:
 
 
 class Trail:
+    MAX_HEIGHT = 9
+
     def __init__(self) -> None:
         self.locations: list[TrailLocation] = []
         self.rating = 0
 
-    def add(self, loc: TrailLocation, map: Map) -> None:
+    def add(self, loc: TrailLocation, trailmap: Map) -> None:
         self.locations.append(loc)
-        if loc.height == 9:
+        if loc.height == self.MAX_HEIGHT:
             self.rating += 1
-        map.colorize_traillocation(loc)
+        trailmap.colorize_traillocation(loc)
+        print(trailmap.colored[loc.y][loc.x], end="", flush=False)
+        Cursor.left(flush=True)
+        sleep(0.05)
 
-    def look_for_new_locs(self, loc: TrailLocation, map: Map) -> Map:
-        if loc.is_left_traillocation(map):
-            self.add(loc.get_left(map), map)
-        if loc.is_right_traillocation(map):
-            self.add(loc.get_right(map), map)
-        if loc.is_down_traillocation(map):
-            self.add(loc.get_down(map), map)
-        if loc.is_up_traillocation(map):
-            self.add(loc.get_up(map), map)
-        map.print_grid(self)
-        return map
+    def look_for_new_locs(self, loc: TrailLocation, trailmap: Map) -> Map:
+        if loc.is_left_traillocation(trailmap):
+            left_loc = loc.get_left(trailmap)
+            Cursor.position(left_loc.y + tzero_y, left_loc.x + tzero_x, True)
+            self.add(left_loc, trailmap)
+        if loc.is_right_traillocation(trailmap):
+            right_loc = loc.get_right(trailmap)
+            Cursor.position(right_loc.y + tzero_y, right_loc.x + tzero_x, True)
+            self.add(right_loc, trailmap)
+        if loc.is_down_traillocation(trailmap):
+            down_loc = loc.get_down(trailmap)
+            Cursor.position(down_loc.y + tzero_y, down_loc.x + tzero_x, True)
+            self.add(down_loc, trailmap)
+        if loc.is_up_traillocation(trailmap):
+            up_loc = loc.get_up(trailmap)
+            Cursor.position(up_loc.y + tzero_y, up_loc.x + tzero_x, True)
+            self.add(up_loc, trailmap)
+        return trailmap
 
     def deduplicate(self) -> set[TrailLocation]:
         set_of_locs = set()
@@ -146,7 +169,7 @@ class Trail:
     def get_number_nines(self) -> int:
         number = 0
         for loc in self.deduplicate():
-            if loc.height == 9:
+            if loc.height == self.MAX_HEIGHT:
                 number += 1
         return number
 
@@ -154,28 +177,36 @@ class Trail:
         return "[" + ",".join([str(c) for c in self.locations]) + "]"
 
 
-def color_trail(map: Map, zero: TrailLocation) -> tuple[int, int]:
+def color_trail(trailmap: Map, zero: TrailLocation) -> tuple[int, int]:
     trail = Trail()
     trail.locations.append(zero)
-    map = trail.look_for_new_locs(zero, map)
+    trailmap = trail.look_for_new_locs(zero, trailmap)
     for loc in trail.locations:
-        map = trail.look_for_new_locs(loc, map)
+        trailmap = trail.look_for_new_locs(loc, trailmap)
     return trail.get_number_nines(), trail.rating
 
 
-lines = read_lines("./input_day_x_example.txt")
-# lines = read_lines("./input_day_x.txt")
-map = Map(lines)
 trail_count = 0
 total_rating = 0
-for zero in map.zeros():
-    map = Map(lines)
-    map.make_loc_green(zero)
-    counter, rating = color_trail(map, zero)
+lines = read_lines("./input_day_x_example.txt")
+trailmap = Map(lines)
+trail = Trail()
+print_empty_lines(12)
+Cursor.up(12, flush=True)
+tzero_y, tzero_x = get_cursor_position()
+for zero in trailmap.zeros():
+    for line in trailmap.lines:
+        print("".join(line), flush=False)
+    print(end="", flush=True)
+    trailmap = Map(lines)
+    trailmap.make_loc_green(zero)
+    Cursor.position(zero.y + tzero_y, zero.x + tzero_x, True)
+    print(trailmap.colored[zero.y][zero.x], end="", flush=True)
+    sleep(0.05)
+    counter, rating = color_trail(trailmap, zero)
     trail_count += counter
     total_rating += rating
+    Cursor.position(tzero_y, tzero_x, False)
 
-print(f"{trail_count=}")
-print(f"{total_rating=}")
-print(f"{total_rating/2=}")
-print("done")
+Cursor.position(tzero_y + 12, 1, True)
+sleep(1)
