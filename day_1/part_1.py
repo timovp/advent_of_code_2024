@@ -25,6 +25,6 @@ left_side.sort()
 right_side.sort()
 
 # calc differences
-diffs = [abs(left - right) for left, right in zip(left_side, right_side)]
+diffs = [abs(left - right) for left, right in zip(left_side, right_side, strict=False)]
 
 print(sum(diffs))
