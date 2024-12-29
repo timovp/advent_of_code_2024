@@ -25,9 +25,7 @@ def make_diff_lines(lines: list[list[str]]) -> list[list[int]]:
 def check_logic(diff_line: list[int]):
     if any(el > 3 or el < -3 for el in diff_line):
         return False
-    if all(el < 0 for el in diff_line) or all(el > 0 for el in diff_line):
-        return True
-    return False
+    return bool(all(el < 0 for el in diff_line) or all(el > 0 for el in diff_line))
 
 
 def check_popped(orig_line: list[str]):
@@ -42,7 +40,8 @@ def check_popped(orig_line: list[str]):
 
 
 def find_safe_reports(
-    diff_lines: list[list[int]], orig_lines: list[list[str]]
+    diff_lines: list[list[int]],
+    orig_lines: list[list[str]],
 ) -> tuple[list[int], list[int]]:
     safe_with_dampener = []
     real_safe = []
